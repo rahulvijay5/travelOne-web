@@ -21,7 +21,7 @@ export interface UpdateRoleRequest {
 }
 
 // Create an axios instance with default config
-const api = axios.create({
+export const api = axios.create({
     baseURL: backendURL,
     headers: {
         'Content-Type': 'application/json',
@@ -99,3 +99,18 @@ export const updateUserRole = async (request: UpdateRoleRequest, token: string):
         throw error;
     }
 } 
+
+export const getUserIdByClerkId = async (clerkId: string, token: string) => {
+    console.log("clerkId", clerkId)
+    const response = await api.get(`/api/users/${clerkId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    if(response.status == 404) console.log('User not found')
+    if(response.status == 200){
+        const data = response.data
+        return data.id
+    }
+    return null
+}

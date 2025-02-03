@@ -10,7 +10,7 @@ const GetCurrentUser = async () => {
 };
 
 export const userIsSuperAdmin = (email: string) => {
-  return email === process.env.SuperAdminEmail;
+  return email === process.env.SUPER_ADMIN_EMAIL;
 };
 
 export default GetCurrentUser;

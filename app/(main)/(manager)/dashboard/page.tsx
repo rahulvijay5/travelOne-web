@@ -12,6 +12,9 @@ export default async function ManagerPage() {
     if (userIsSuperAdmin(email)) {
         redirect("/s");
     }
+    if(user.publicMetadata?.role === "owner") {
+        redirect("/o");
+    }
   return (
     <div>
         Manager Page
