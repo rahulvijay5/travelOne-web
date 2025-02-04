@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { securelyGetHotelId, securelyStoreHotelId } from '@/lib/encryption'
 
 interface HotelState {
   hotelId: string | null
@@ -14,6 +15,7 @@ interface HotelState {
   setHotelName: (name: string) => void
   setSelectedHotel: (hotel: { id: string; code: string; name: string } | null) => void
   reset: () => void
+  initializeFromStorage: () => void
 }
 
 export const useHotelStore = create<HotelState>((set) => ({
@@ -21,30 +23,65 @@ export const useHotelStore = create<HotelState>((set) => ({
   hotelCode: null,
   hotelName: null,
   selectedHotel: null,
-  setHotelId: (id) => set({ hotelId: id }),
+  setHotelId: (id) => {
+    securelyStoreHotelId(id);
+    set({ hotelId: id });
+  },
   setHotelCode: (code) => set({ hotelCode: code }),
-  setHotelName: (name) => set({ hotelName: name }),
+  setHotelName: (name) => {
+    localStorage.setItem("hotelName", name);
+    set({ hotelName: name });
+  },
   setSelectedHotel: (hotel) => {
     if (hotel) {
+      localStorage.setItem("hotelName", hotel.name);
+      localStorage.setItem("hotelCode", hotel.code);
+      securelyStoreHotelId(hotel.id);
       set({
         selectedHotel: hotel,
         hotelId: hotel.id,
         hotelCode: hotel.code,
         hotelName: hotel.name
-      })
+      });
     } else {
+      localStorage.removeItem("hotelName");
+      localStorage.removeItem("hotelCode");
+      securelyStoreHotelId(null);
       set({
         selectedHotel: null,
         hotelId: null,
         hotelCode: null,
         hotelName: null
-      })
+      });
     }
   },
-  reset: () => set({
-    hotelId: null,
-    hotelCode: null,
-    hotelName: null,
-    selectedHotel: null
-  })
+  reset: () => {
+    localStorage.removeItem("hotelName");
+    localStorage.removeItem("hotelCode");
+    securelyStoreHotelId(null);
+    set({
+      hotelId: null,
+      hotelCode: null,
+      hotelName: null,
+      selectedHotel: null
+    });
+  },
+  initializeFromStorage: () => {
+    const storedHotelId = securelyGetHotelId();
+    const storedHotelName = localStorage.getItem("hotelName");
+    const storedHotelCode = localStorage.getItem("hotelCode");
+    
+    if (storedHotelId && storedHotelName && storedHotelCode) {
+      set({
+        hotelId: storedHotelId,
+        hotelName: storedHotelName,
+        hotelCode: storedHotelCode,
+        selectedHotel: {
+          id: storedHotelId,
+          name: storedHotelName,
+          code: storedHotelCode
+        }
+      });
+    }
+  }
 })) 

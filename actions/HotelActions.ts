@@ -1,4 +1,4 @@
-import { api } from "./Users";
+import { api } from "@/lib/api";
 
 export const getHotelDetails = async (code: string) => {
     console.log(code)

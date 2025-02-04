@@ -13,6 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Home, Users, Calendar, Settings } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
@@ -44,9 +45,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props}>
       <SidebarHeader className="border-b p-4">
         <div className="flex items-center justify-between mb-4">
-          <IconWrapper>
-            <Home />
-          </IconWrapper>
+          <SidebarTrigger >
+            <IconWrapper>
+              <Home />
+            </IconWrapper>
+          </SidebarTrigger>
           <ModeToggle />
         </div>
         <HotelsDropdown />

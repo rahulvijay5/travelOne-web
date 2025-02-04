@@ -4,8 +4,6 @@ import { useState } from "react";
 import {
   searchUsers,
   updateUserRole,
-  type User,
-  type UserRole,
 } from "@/actions/Users";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useAuth } from "@clerk/nextjs";
@@ -22,6 +20,7 @@ import {
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loader2 } from "lucide-react"
+import { User, UserRole } from "@/types";
 
 export default function SuperAdminPage() {
   const { getToken } = useAuth();
@@ -95,10 +94,10 @@ export default function SuperAdminPage() {
   };
 
   return (
-    <div className="p-6 w-full max-w-6xl mx-auto space-y-8">
+    <div className="p-6 w-full space-y-8">
       <h1 className="text-3xl font-bold">User Management</h1>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 ">
         <Input
           type="text"
           placeholder="Search by email, mobile number, or name"
@@ -140,7 +139,7 @@ export default function SuperAdminPage() {
                     {user.name || "N/A"}
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.mobile || "N/A"}</TableCell>
+                  <TableCell>{user.phoneNumber || "N/A"}</TableCell>
                   <TableCell>
                     <Select
                       value={user.role}

@@ -16,6 +16,7 @@ import { getUserIdByClerkId } from "@/actions/Users";
 import { superAdminEmail } from "@/lib/constants";
 import * as React from "react";
 import { useUserStore } from "@/store/userStore";
+import { useEffect, useState } from "react";
 
 const IconWrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="h-4 w-4 flex items-center justify-center">
@@ -33,26 +34,34 @@ type UserRole = "SUPERADMIN" | "OWNER" | "MANAGER";
 
 export default function HotelsDropdown() {
   const { userId, getToken } = useAuth();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [ownedHotels, setOwnedHotels] = React.useState<Hotel[]>([]);
-  const [managerHotelCode, setManagerHotelCode] = React.useState("");
-  const [error, setError] = React.useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [ownedHotels, setOwnedHotels] = useState<Hotel[]>([]);
+  const [managerHotelCode, setManagerHotelCode] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
   
   // Determine effective role
   const [effectiveRole, setEffectiveRole] = React.useState<UserRole | null>(null);
 
   const selectedHotel = useHotelStore((state) => state.selectedHotel);
   const setSelectedHotel = useHotelStore((state) => state.setSelectedHotel);
+  const initializeFromStorage = useHotelStore((state) => state.initializeFromStorage);
   const setUserId = useUserStore((state) => state.setUserId);
 
-  React.useEffect(() => {
+  // Initialize from storage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      initializeFromStorage();
+    }
+  }, [initializeFromStorage]);
+
+  useEffect(() => {
     setMounted(true);
   }, []);
 
   // Determine role only once when user data is available
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
       const email = user.emailAddresses[0]?.emailAddress;
       if (email === superAdminEmail) {

@@ -1,5 +1,5 @@
 import { SignInButton, SignedOut, SignedIn } from "@clerk/nextjs";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
 
 export default function MainLayout({
@@ -16,12 +16,11 @@ export default function MainLayout({
       </SignedOut>
       <SignedIn>
         <SidebarProvider>
-          <div className="flex h-screen">
-            <AppSidebar className="h-screen" />
-            <main className="flex-1 overflow-auto">
-              <div className="container mx-auto py-6">
-                {children}
-              </div>
+          <div className="flex h-screen w-full relative">
+              <AppSidebar className="h-screen" />
+              <SidebarTrigger className="absolute top-4 left-4"/>
+            <main className="w-full">
+              {children}
             </main>
           </div>
         </SidebarProvider>

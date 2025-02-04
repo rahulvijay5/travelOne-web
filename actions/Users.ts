@@ -1,38 +1,12 @@
-import axios from 'axios';
-
-// Use NEXT_PUBLIC_ prefix for client-side access
-const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3002';
-
-export type UserRole = 'OWNER' | 'MANAGER' | 'USER';
-
-export interface User {
-    id: string;
-    email: string;
-    mobile?: string;
-    name?: string;
-    clerkId: string;
-    role?: UserRole;
-    // Add other user fields as needed
-}
-
-export interface UpdateRoleRequest {
-    clerkId: string;
-    role: UserRole;
-}
-
-// Create an axios instance with default config
-export const api = axios.create({
-    baseURL: backendURL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+import { api } from "@/lib/api";
+import { UpdateRoleRequest, User } from "@/types";
+import axios from "axios";
 
 export const searchUsers = async (searchTerm: string, token: string): Promise<User[]> => {
     try {
-        console.log("Making request to backend URL:", backendURL);
+        // console.log("Making request to backend URL:", backendURL);
         const url = `/api/users/search`;
-        console.log("Full request URL:", backendURL + url);
+        // console.log("Full request URL:", backendURL + url);
         
         const response = await api.get(url, {
             params: {
@@ -42,7 +16,7 @@ export const searchUsers = async (searchTerm: string, token: string): Promise<Us
                 Authorization: `Bearer ${token}`
             }
         });
-        console.log("Search response:", response.data);
+            console.log("Search response:", response.data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -81,7 +55,6 @@ export const getUserDetails = async (clerkId: string, token: string): Promise<Us
 
 export const updateUserRole = async (request: UpdateRoleRequest, token: string): Promise<User> => {
     try {
-        console.log(request,token)
         const response = await api.post('/api/users/update-role', request, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -101,7 +74,6 @@ export const updateUserRole = async (request: UpdateRoleRequest, token: string):
 } 
 
 export const getUserIdByClerkId = async (clerkId: string, token: string) => {
-    console.log("clerkId", clerkId)
     const response = await api.get(`/api/users/${clerkId}`, {
         headers: {
             'Authorization': `Bearer ${token}`
