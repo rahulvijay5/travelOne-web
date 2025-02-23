@@ -150,3 +150,27 @@ export interface BookingData {
     transactionId: string;
   };
 }
+
+
+export interface RoomBulk {
+  id: string;
+  type: string;
+  roomNumber: string;
+}
+
+export interface BookingDataBulk {
+  id: string;
+  status: 'CONFIRMED' | 'PENDING' | 'CANCELLED' | 'COMPLETED';
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  room: {
+    roomNumber: string;
+  };
+  customer: {
+    name: string;
+  };
+  payment: {
+    totalAmount: number;
+  };
+}

@@ -76,10 +76,12 @@ export const updateUserRole = async (request: UpdateRoleRequest, token: string):
 export const getUserIdByClerkId = async (clerkId: string, token: string) => {
     const response = await api.get(`/api/users/${clerkId}`, {
         headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
     })
     if(response.status == 404) console.log('User not found')
+        console.log(response)
     if(response.status == 200){
         const data = response.data
         return data.id

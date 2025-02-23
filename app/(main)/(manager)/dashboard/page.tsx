@@ -1,23 +1,22 @@
-import React from 'react'
-import { currentUser } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
-import { userIsSuperAdmin } from '@/hooks/getCurrentUser';
+"use client";
 
-export default async function ManagerPage() {
-    const user = await currentUser();
-    if (!user) {
-        redirect("/unauthenticated");
-    }
-    const email = user.emailAddresses[0]?.emailAddress;
-    if (userIsSuperAdmin(email)) {
-        redirect("/s");
-    }
-    if(user.publicMetadata?.role === "owner") {
-        redirect("/o");
-    }
+import { useHotelStore } from "@/store/hotelStore";
+import { HotelAnalytics } from "@/components/HotelAnalytics";
+
+export default function DashboardPage() {
+  const hotelId = useHotelStore((state) => state.hotelId);
+
+  if (!hotelId) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-16rem)]">
+        <p className="text-muted-foreground">Please select a hotel first</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
-        Manager Page
+    <div className="container mx-auto space-y-8">
+      <HotelAnalytics hotelId={hotelId} />
     </div>
-  )
+  );
 }

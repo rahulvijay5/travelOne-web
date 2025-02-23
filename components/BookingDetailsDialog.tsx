@@ -139,7 +139,7 @@ export function BookingDetailsDialog({
           <Separator />
 
           {/* Booking Details */}
-          <div className="space-y-2">
+            <div className="space-y-2">
             <h4 className="font-medium">Stay Details</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -176,13 +176,13 @@ export function BookingDetailsDialog({
 
               <div className="text-sm text-muted-foreground flex gap-2 items-center">
                 <p>Payment Status:</p>
-                <Badge
-                  variant="outline"
+                  <Badge
+                    variant="outline"
                   className={`text-sm rounded-2xl ${
-                    booking.payment.status === "COMPLETED"
+                      booking.payment.status === "COMPLETED"
                       ? "dark:bg-green-800 bg-green-200"
                       : "dark:bg-red-800 bg-red-200"
-                  }`}
+                    }`}
                 >{booking.payment.status.toLocaleLowerCase()}</Badge>
               </div>
             </div> <div className="space-y-4">
@@ -190,9 +190,9 @@ export function BookingDetailsDialog({
                 <div>
                   <span className="text-sm text-muted-foreground">
                     Total Amount:
-                  </span>
+                </span>
                   <p className="font-medium">₹{booking.payment.totalAmount}</p>
-                </div>
+              </div>
                 <div className="">
                   <label className="text-sm text-muted-foreground">
                     Paid Amount:
