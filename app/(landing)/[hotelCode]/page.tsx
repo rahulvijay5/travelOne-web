@@ -1,6 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
-import { getHotelByCode } from "@/actions/HotelActions";
+import {
+  getHotelAdditionalDetails,
+  getHotelByCode,
+} from "@/actions/HotelActions";
 import { HotelGallery } from "@/components/hotel/HotelGallery";
 import { HotelBookingCard } from "@/components/hotel/HotelBookingCard";
 import { HotelAmenities } from "@/components/hotel/HotelAmenities";
@@ -55,7 +58,11 @@ export async function generateMetadata({
 }
 
 export default async function HotelPage({ params }: PageProps) {
-  const hotel = await getHotelByCode(params.hotelCode);
+  const hotelCode = await params.hotelCode
+  const hotel = await getHotelByCode(hotelCode);
+  const hotelAdditionalDetails = await getHotelAdditionalDetails(
+    hotelCode
+  );
 
   if (hotel.status === 404) {
     return (
@@ -165,6 +172,11 @@ export default async function HotelPage({ params }: PageProps) {
                   )}
                 </div>
               </div>
+              {hotelAdditionalDetails.status == 200 ? (
+                <div>hotelAdditionalDetails</div>
+              ) : (
+                <div>hotelAdditionalDetails.error</div>
+              )}
             </div>
 
             {/* Booking Card */}

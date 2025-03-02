@@ -11,11 +11,30 @@ export const getHotelDetails = async (code: string) => {
   }
   return null;
 };
+export const getHotelAdditionalDetails = async (code: string) => {
+  try {
+    const res = await api.get(`/api/hotel/code/${code}/additional-data`);
+    console.log(res);
+    const data = res.data;
+    return {
+      status: 200,
+      data,
+    };
+  } catch (error) {
+    console.error(
+      "Error in getting additional data for hotel with code: ",
+      code
+    );
+    return {
+      status: 500,
+      error: `Error in fetching additional hotel data: ${error}`,
+    };
+  }
+};
 
 export const getHotelByCode = async (code: string) => {
   try {
-    const res = await api.get(`/api/hotels/code/${code}`);  
-    console.log("Response status:", res.status);
+    const res = await api.get(`/api/hotels/code/${code}`);
 
     if (res.status !== 200) {
       if (res.status === 404) {
