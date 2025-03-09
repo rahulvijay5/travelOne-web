@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import {
-  getHotelAdditionalDetails,
+  // getHotelAdditionalDetails,
   getHotelByCode,
 } from "@/actions/HotelActions";
 import { HotelGallery } from "@/components/hotel/HotelGallery";
@@ -12,13 +12,14 @@ import { Separator } from "@/components/ui/separator";
 import { Clock, MapPin, Phone } from "lucide-react";
 
 interface PageProps {
-  params: { hotelCode: string };
+  params: Promise<{ hotelCode: string }>;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const hotel = await getHotelByCode(params.hotelCode);
+  const hotelCode = (await params).hotelCode
+  const hotel = await getHotelByCode(hotelCode);
 
   if (hotel.status !== 200) {
     return {
@@ -58,11 +59,11 @@ export async function generateMetadata({
 }
 
 export default async function HotelPage({ params }: PageProps) {
-  const hotelCode = await params.hotelCode
+  const hotelCode = (await params).hotelCode
   const hotel = await getHotelByCode(hotelCode);
-  const hotelAdditionalDetails = await getHotelAdditionalDetails(
-    hotelCode
-  );
+  // const hotelAdditionalDetails = await getHotelAdditionalDetails(
+  //   hotelCode
+  // );
 
   if (hotel.status === 404) {
     return (
@@ -172,11 +173,11 @@ export default async function HotelPage({ params }: PageProps) {
                   )}
                 </div>
               </div>
-              {hotelAdditionalDetails.status == 200 ? (
+              {/* {hotelAdditionalDetails.status == 200 ? (
                 <div>hotelAdditionalDetails</div>
               ) : (
                 <div>hotelAdditionalDetails.error</div>
-              )}
+              )} */}
             </div>
 
             {/* Booking Card */}

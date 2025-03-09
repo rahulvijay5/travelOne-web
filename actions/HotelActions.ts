@@ -1,4 +1,5 @@
 import { api } from "@/lib/api";
+import { AxiosError } from "axios";
 
 export const getHotelDetails = async (code: string) => {
   console.log(code);
@@ -35,32 +36,23 @@ export const getHotelAdditionalDetails = async (code: string) => {
 export const getHotelByCode = async (code: string) => {
   try {
     const res = await api.get(`/api/hotels/code/${code}`);
-
-    if (res.status !== 200) {
-      if (res.status === 404) {
-        return { status: 404, error: "Hotel not found" };
-      }
-      if (res.status === 400) {
-        return { status: 400, error: "Invalid hotel code" };
-      }
-      return { status: res.status, error: "Failed to fetch hotel details" };
-    }
-
-    // Parse response data
     const data = res.data;
-
-    // Validate required fields
     if (!data.id || !data.code || !data.hotelName) {
       console.error("Invalid hotel data received:", data);
       return { status: 500, error: "Invalid hotel data received" };
     }
-
     return { status: 200, data };
-  } catch (error) {
-    console.error("Error getting hotel by code:", error);
+  } catch (error:unknown) {
+    if (error instanceof AxiosError){
+      if (error.response && error.response.status === 404) {
+        return { status: 404, error: "Hotel not found" };
+      }
+    }
+
     return { status: 500, error: "Internal server error" };
   }
 };
+
 
 export const getHotelsByOwnerId = async (id: string, token: string) => {
   const response = await api.get(`/api/hotels/owner/${id}`, {
