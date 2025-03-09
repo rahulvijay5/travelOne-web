@@ -1,11 +1,12 @@
 "use client"
 
-import { getUserDetails, type User } from "@/actions/Users";
+import { getUserDetails} from "@/actions/Users";
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { UserViewComponent } from "@/components/UserViewComponent";
 import { useParams } from "next/navigation";
+import { User } from "@/types";
 
 export default function UserDetailPage() {
     const {clerkId} = useParams()

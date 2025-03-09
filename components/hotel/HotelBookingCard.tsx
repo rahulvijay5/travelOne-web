@@ -22,7 +22,6 @@ interface HotelBookingCardProps {
 }
 
 export function HotelBookingCard({
-  hotelId,
   maxGuests,
   checkInTime,
   checkOutTime,

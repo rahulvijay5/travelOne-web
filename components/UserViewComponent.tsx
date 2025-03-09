@@ -1,11 +1,11 @@
 'use client';
 
-import { User, UserRole } from "@/actions/Users";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Mail, Phone, User as UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { User, UserRole } from "@/types";
 
 interface UserViewComponentProps {
     user: User;
@@ -21,7 +21,7 @@ export function UserViewComponent({ user }: UserViewComponentProps) {
                 return 'bg-purple-100 text-purple-800';
             case 'MANAGER':
                 return 'bg-blue-100 text-blue-800';
-            case 'USER':
+            case 'CUSTOMER':
                 return 'bg-green-100 text-green-800';
             default:
                 return 'bg-gray-100 text-gray-800';
@@ -71,12 +71,12 @@ export function UserViewComponent({ user }: UserViewComponentProps) {
                                     <p className="font-medium">{user.email}</p>
                                 </div>
                             </div>
-                            {user.mobile && (
+                            {user.phoneNumber && (
                                 <div className="flex items-center space-x-2">
                                     <Phone className="h-5 w-5 text-gray-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Mobile</p>
-                                        <p className="font-medium">{user.mobile}</p>
+                                        <p className="text-sm text-gray-500">Phone Number</p>
+                                        <p className="font-medium">{user.phoneNumber}</p>
                                     </div>
                                 </div>
                             )}
