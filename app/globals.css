@@ -101,3 +101,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+.glass-card {
+  @apply bg-white/70 dark:bg-black/10 dark:border-white/10 backdrop-blur-lg border border-white/20 shadow-lg;
+}
